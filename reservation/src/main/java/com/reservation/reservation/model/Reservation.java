@@ -14,17 +14,27 @@ public class Reservation {
     int idCustomer;
     Date startDate;
     Date endDate;
+    Double price;
 
-    public Reservation(int id, int idVehicle, int idCustomer, Date startDate, Date endDate) {
+    public Reservation(int id, int idVehicle, int idCustomer, Date startDate, Date endDate, Double price) {
         this.id = id;
         this.idVehicle = idVehicle;
         this.idCustomer = idCustomer;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.price = price;
     }
 
     public Reservation() {
 
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public int getId() {

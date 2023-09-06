@@ -36,6 +36,7 @@ public class Vehicule {
     String type;
 
 
+
     public Vehicule(){
 
     }
@@ -169,13 +170,13 @@ public class Vehicule {
                 "id=" + id +
                 ", marque='" + marque + '\'' +
                 ", couleur='" + couleur + '\'' +
-                ", immattriculationNb=" + immattriculationNb +
+                ", immattriculationNb='" + immattriculationNb + '\'' +
                 ", cheveauxFiscNb=" + cheveauxFiscNb +
                 ", prixReservation=" + prixReservation +
                 ", prixKillometre=" + prixKillometre +
                 ", cm3=" + cm3 +
                 ", m3Chargement=" + m3Chargement +
-                ", année=" + annee +
+                ", annee=" + annee +
                 ", nbKillometre=" + nbKillometre +
                 ", type='" + type + '\'' +
                 '}';
