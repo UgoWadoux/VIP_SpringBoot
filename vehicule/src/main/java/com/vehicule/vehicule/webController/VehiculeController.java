@@ -3,10 +3,13 @@ package com.vehicule.vehicule.webController;
 import com.vehicule.vehicule.dao.Dao;
 import com.vehicule.vehicule.model.Vehicule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class VehiculeController {
@@ -44,8 +47,29 @@ public class VehiculeController {
         @ApiOperation(value = "Ajoute un vehicule a la liste.")
         @PostMapping
         public void addVehicule(@RequestBody Vehicule vehicule) {
+            motoCm3(vehicule);
+            utilitaryM3(vehicule);
             vehiculeDao.save(vehicule);
         }
+
+        public void motoCm3 (Vehicule vehicule) {
+
+            if(vehicule.getType().equals("moto")){
+                if(vehicule.getCm3() == 0){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "cm3 need to be set");
+                }
+            }
+        }
+
+        public void utilitaryM3 (Vehicule vehicule) {
+
+            if(vehicule.getType().equals("utilitaire")){
+                if(vehicule.getM3Chargement() == 0){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "m3Chargement need to be set");
+                }
+            }
+        }
+
 
         @ApiOperation(value = "Modifie un véhicule existant.")
         @PutMapping

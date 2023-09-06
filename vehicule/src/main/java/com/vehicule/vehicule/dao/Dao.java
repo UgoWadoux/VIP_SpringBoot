@@ -13,7 +13,6 @@ public interface Dao extends JpaRepository<Vehicule, Integer> {
 
     Vehicule findById(int id);
 
-    Vehicule save(Vehicule vehicule);
 
     Vehicule deleteById(int id);
 
