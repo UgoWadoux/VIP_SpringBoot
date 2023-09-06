@@ -2,12 +2,11 @@ package com.reservation.reservation.web.controller;
 
 import com.reservation.reservation.dao.ReservationDao;
 import com.reservation.reservation.model.Reservation;
+import com.reservation.reservation.model.Vehicule;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/reservation")
@@ -21,6 +20,10 @@ public class ReservationController {
     @GetMapping
     public Iterable<Reservation> getAllReservation(){
         return reservationDao.findAll();
+    }
+    @GetMapping("/vehicule")
+    public Vehicule returnVCehicule(){
+        return checkLicense(1);
     }
     @ApiOperation(value = "Récupère une réservation par id")
     @GetMapping("/{id}")
@@ -43,14 +46,10 @@ public class ReservationController {
         return reservationDao.deleteById(id);
     }
 
-    public void checkLicense(String licenseNumber){
+    public Vehicule checkLicense(int idVehicule){
         RestTemplate restTemplate =new RestTemplate();
-        Boolean isValid = restTemplate.getForObject("http://localhost:8081/licenses/"+licenseNumber,Boolean.class);
-        if (isValid== null || !isValid){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "entity not found"
-            );
-        }
+      Vehicule vehicule=  restTemplate.getForObject("http://192.168.1.202:8083/vehicules/" + idVehicule, Vehicule.class);
+    return vehicule;
     }
 
 }
