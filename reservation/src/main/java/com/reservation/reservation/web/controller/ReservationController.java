@@ -58,7 +58,7 @@ public class ReservationController {
         Client monClient = newClient(idClient);
         if (BirthdatePerm(monClient)<18){
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "entity not found"
+                    HttpStatus.BAD_REQUEST,"Moins de 18 ans"
             );
         }
         return reservationDao.save(reservation);
