@@ -25,66 +25,58 @@ import java.util.List;
 public class ReservationController {
     @Autowired
     private ReservationDao reservationDao;
-
-    public ReservationController(ReservationDao reservationDao) {
+    public ReservationController(ReservationDao reservationDao){
         this.reservationDao = reservationDao;
     }
-
     @ApiOperation(value = "Recupére toute les reservation")
     @GetMapping
-    public Iterable<Reservation> getAllReservation() {
+    public Iterable<Reservation> getAllReservation(){
         return reservationDao.findAll();
     }
-
     @GetMapping("/vehicule/{id}")
-    public Vehicule returnVCehicule(@PathVariable int id) {
+    public Vehicule returnVCehicule(@PathVariable int id){
         return newVehicule(id);
     }
-
     @GetMapping("/vehicule")
-    public List<Vehicule> getAllVehicule() {
-        RestTemplate restTemplate = new RestTemplate();
+    public List<Vehicule> getAllVehicule(){
+        RestTemplate restTemplate =new RestTemplate();
 
         return Arrays.asList(restTemplate.getForObject("http://192.168.1.202:8083/vehicules", Vehicule[].class));
     }
-
     @ApiOperation(value = "Récupère une réservation par id")
     @GetMapping("/{id}")
-    public Reservation findReservationById(@PathVariable int id) {
+    public Reservation findReservationById(@PathVariable int id){
         return reservationDao.findById(id);
     }
-
     @ApiOperation(value = "Ajoute une réservation")
     @PostMapping
-    public Reservation addReservation(@RequestBody Reservation reservation, @RequestParam int nbKilometer) {
-        reservation.setPrice(calculPriceCar(nbKilometer, reservation.getIdVehicle()));
+    public Reservation addReservation(@RequestBody Reservation reservation, @RequestParam int nbKilometer){
+        reservation.setPrice(calculPriceCar(nbKilometer,reservation.getIdVehicle()));
         return reservationDao.save(reservation);
     }
-
     @ApiOperation(value = "Modifie une reservation")
     @PutMapping
-    public Reservation modifyReservation(@RequestBody Reservation reservation) {
-        reservation.setPrice(calculPriceCar(500, reservation.getIdVehicle()));
+    public Reservation modifyReservation(@RequestBody Reservation reservation){
+        reservation.setPrice(calculPriceCar(500,reservation.getIdVehicle()));
         return reservationDao.save(reservation);
     }
-
     @ApiOperation(value = "Supprime une opération par id")
     @DeleteMapping("/{id}")
-    public Reservation deleteReservation(@PathVariable int id) {
+    public Reservation deleteReservation(@PathVariable int id){
         return reservationDao.deleteById(id);
     }
 
-    public Vehicule newVehicule(int idVehicule) {
-        RestTemplate restTemplate = new RestTemplate();
-        Vehicule vehicule = restTemplate.getForObject("http://192.168.1.202:8083/vehicules/" + idVehicule, Vehicule.class);
-        return vehicule;
+    public Vehicule newVehicule(int idVehicule){
+        RestTemplate restTemplate =new RestTemplate();
+      Vehicule vehicule=  restTemplate.getForObject("http://192.168.1.202:8083/vehicules/" + idVehicule, Vehicule.class);
+    return vehicule;
     }
 
 
-    public Period BirthdateCalcul(LocalDate startDate, LocalDate endDate) {
+    public int BirthdateCalcul(LocalDate startDate, LocalDate endDate) {
 
         Period period = Period.between(startDate, endDate);
-        return period;
+        return period.getYears();
 
     }
 public LocalDate fromDateToLocaleDate(Date date){
@@ -99,16 +91,21 @@ public LocalDate fromDateToLocaleDate(Date date){
     return client;
 
 }
-        public void BirthdatePerm (Client client){
+        public int BirthdatePerm (Client client){
 
 
         Date customerDate = client.getBirthdate();
         LocalDate startDate = fromDateToLocaleDate(customerDate);
         LocalDate endDate = LocalDate.parse("2023-09-08");
 
-        BirthdateCalcul(startDate, endDate);
+        return BirthdateCalcul(startDate, endDate);
     }
 
+    @GetMapping("/client")
+    public int clientAge(){
+        Client client = newClient(2);
+        return  BirthdatePerm(client);
+    }
     public Double calculPriceCar(int nbKilometer, int idVehicule){
         Vehicule vehicule = newVehicule(idVehicule);
         String type = vehicule.getType();
@@ -123,9 +120,21 @@ public LocalDate fromDateToLocaleDate(Date date){
                 return null;
 
         }}
-//    public Double calculPriceMoto(int nbKilometer){
-//        Vehicule vehicule = newVehicule(1);
-//
-//    }
 
+    public void disponiblity(Vehicule vehicule, Reservation reservation){
+
+//        listStarDate.forEach();
+
+    }
+
+    @GetMapping("/idVehicle")
+    public Iterable<Integer> findAllStartDate (){
+        Date startDate = convertToDateViaSqlDate( LocalDate.of (2023,9,6));
+        Date endDate = convertToDateViaSqlDate(LocalDate.of(2023,9,20));
+        return reservationDao.carNotDisponible(startDate,endDate);
+    }
+
+    public Date convertToDateViaSqlDate(LocalDate dateToConvert) {
+        return java.sql.Date.valueOf(dateToConvert);
+    }
 }
