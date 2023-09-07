@@ -55,10 +55,23 @@ public class ReservationController {
     public Reservation addReservation(@RequestBody Reservation reservation, @RequestParam int nbKilometer){
         reservation.setPrice(calculPriceCar(nbKilometer,reservation.getIdVehicle()));
         int idClient = reservation.getIdCustomer();
+        int idVehicle = reservation.getIdVehicle();
         Client monClient = newClient(idClient);
+        Vehicule myClientReservation = newVehicule(idVehicle);
+        int cvVehicle = myClientReservation.getCheveauxFiscNb();
         if (BirthdatePerm(monClient)<18){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,"Moins de 18 ans"
+            );
+        }
+        if(BirthdatePerm(monClient) > 18 && BirthdatePerm(monClient) < 21 && cvVehicle>8) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,"Trop de chevaux"
+            );
+        }
+        if (BirthdatePerm(monClient) >= 21 && BirthdatePerm(monClient) < 25 && cvVehicle > 13){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,"Trop de chevaux"
             );
         }
         return reservationDao.save(reservation);
