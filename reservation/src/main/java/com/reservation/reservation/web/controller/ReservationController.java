@@ -8,8 +8,10 @@ import com.reservation.reservation.model.Client;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,6 +54,13 @@ public class ReservationController {
     @PostMapping
     public Reservation addReservation(@RequestBody Reservation reservation, @RequestParam int nbKilometer){
         reservation.setPrice(calculPriceCar(nbKilometer,reservation.getIdVehicle()));
+        int idClient = reservation.getIdCustomer();
+        Client monClient = newClient(idClient);
+        if (BirthdatePerm(monClient)<18){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
+        }
         return reservationDao.save(reservation);
     }
     @ApiOperation(value = "Modifie une reservation")
