@@ -15,6 +15,8 @@ public class Vehicule {
 
     String marque;
 
+    String model;
+
     String couleur;
 
     String immattriculationNb;
@@ -35,15 +37,19 @@ public class Vehicule {
 
     String type;
 
+    String src;
+
 
     public Vehicule(){
 
     }
 
-    public Vehicule(int id, String marque, String couleur, String immattriculationNb, int cheveauxFiscNb, int prixReservation, int prixKillometre, int cm3, int m3Chargement, Date annee, int nbKillometre, String type){
+    public Vehicule(int id, String marque, String model, String couleur, String immattriculationNb, int cheveauxFiscNb, int prixReservation, int prixKillometre, int cm3, int m3Chargement, Date annee, int nbKillometre, String type, String src){
         this.id = id;
 
         this.marque = marque;
+
+        this.model = model;
 
         this.couleur = couleur;
 
@@ -64,6 +70,8 @@ public class Vehicule {
         this.nbKillometre = nbKillometre;
 
         this.type = type;
+
+        this.src = src;
     }
 
 
@@ -78,6 +86,10 @@ public class Vehicule {
     public String getMarque() {
         return marque;
     }
+
+    public void setModel(String model) { this.model = model; }
+
+    public String getModel(){ return model; }
 
     public void setMarque(String marque) {
         this.marque = marque;
@@ -163,12 +175,17 @@ public class Vehicule {
         this.type = type;
     }
 
+    public String getSrc() {return src; }
+
+    public void setSrc(String src) { this.src = src; }
+
     @Override
     public String toString() {
         return "Vehicule{" +
                 "id=" + id +
                 ", marque='" + marque + '\'' +
                 ", couleur='" + couleur + '\'' +
+                ", model=" + model +
                 ", immattriculationNb=" + immattriculationNb +
                 ", cheveauxFiscNb=" + cheveauxFiscNb +
                 ", prixReservation=" + prixReservation +
@@ -177,7 +194,8 @@ public class Vehicule {
                 ", m3Chargement=" + m3Chargement +
                 ", année=" + annee +
                 ", nbKillometre=" + nbKillometre +
-                ", type='" + type + '\'' +
+                ", type=" + type +
+                ", src='" + src + '\'' +
                 '}';
     }
 }

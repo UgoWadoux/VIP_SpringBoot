@@ -16,7 +16,7 @@ public class VehiculeController {
 
 
 
-
+@CrossOrigin
     @RestController
     @RequestMapping("/vehicules")
     public class VehiculesController {
